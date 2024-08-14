@@ -20,9 +20,8 @@ const verificarToken = async (req, res) => {
       return res.status(401).json({ message: 'Token expirado' });
     }
 
-    // Si el token es válido, devolver la información del cliente
-    delete cliente.__v;  // Eliminar el campo __v
-    res.status(200).json({ message: 'Token válido', cliente });
+    // Si el token es válido, devolver el mensaje de éxito
+    res.status(200).json({ message: 'Token válido' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Error del servidor', error });

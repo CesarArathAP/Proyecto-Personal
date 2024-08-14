@@ -2,7 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const connectDB = require('./db/conexion');
 const Autenticacion = require('./routes/auth');
-const VerificarToken = require('./routes/verificar_token');
+const SolicitarToken = require('./routes/solicitar_token');
+const VerificarToken = require('./routes/verificar_token')
 
 const app = express();
 
@@ -14,7 +15,8 @@ app.use(express.json());
 app.use(cors());
 
 app.use('/api/auth/users', Autenticacion);
-app.use('/api/verificar-token', VerificarToken);
+app.use('/api/solicitar-token', SolicitarToken);
+app.use('/api/verificar_token', VerificarToken);
 
 // Iniciar el servidor
 const PORT = process.env.PORT || 3000;
