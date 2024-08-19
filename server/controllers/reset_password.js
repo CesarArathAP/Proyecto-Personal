@@ -25,8 +25,8 @@ const resetPassword = async (req, res) => {
 
         // Actualizar la contraseña
         cliente.credenciales.contraseña = nuevaContraseña;
-        // cliente.token = null;
-        // cliente.token_expiration = null;
+        cliente.token = null;
+        cliente.token_expiration = null;
         await cliente.save();
 
         return res.status(200).json({ message: 'Contraseña restablecida exitosamente' });
