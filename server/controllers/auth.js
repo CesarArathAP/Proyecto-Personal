@@ -1,11 +1,10 @@
 const ClientAuth = require('../models/ClientAuth');
-const { v4: uuidv4 } = require('uuid');
 
 const login = async (req, res) => {
   try {
     const { usuario, contraseña } = req.body;
 
-    // Buscar el cliente por nombre de usuario
+    // Buscar al cliente por nombre de usuario
     const cliente = await ClientAuth.findOne({ 'credenciales.usuario': usuario }).lean();
 
     if (!cliente) {
@@ -39,29 +38,14 @@ const login = async (req, res) => {
       return res.status(401).json({ message: 'Contraseña incorrecta' });
     }
 
-    // Si la autenticación es exitosa, restablecer los intentos fallidos y generar un token
+    // Si la autenticación es exitosa, restablecer los intentos fallidos
     await ClientAuth.updateOne({ 'credenciales.usuario': usuario }, { intentos_fallidos: 0 });
-
-    // Generar un token único de 32 caracteres
-    const token = uuidv4().replace(/-/g, '').slice(0, 32);
-
-    // Establecer la expiración del token a 1 hora
-    const token_expiration = new Date(Date.now() + 60 * 60 * 1000); // 1 hora desde ahora
-
-    // Actualizar el cliente con el token y la fecha de expiración
-    await ClientAuth.updateOne(
-      { 'credenciales.usuario': usuario },
-      { 
-        token,
-        token_expiration 
-      }
-    );
 
     // Eliminar el campo __v del objeto cliente
     delete cliente.__v;
 
-    // Devolver el token junto con la información del cliente
-    res.status(200).json({ ...cliente, token });
+    // Devolver la información del cliente sin generar token
+    res.status(200).json(cliente);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Error del servidor', error });

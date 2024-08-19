@@ -7,8 +7,8 @@ const transporter = nodemailer.createTransport({
     port: 587,
     secure: false,
     auth: {
-        user: '',
-        pass: ''
+        user: 'cesararath1976@gmail.com',
+        pass: 'fjdgjotfhlbvpsni'
     }
 });
 
@@ -24,7 +24,7 @@ const sendEmail = async (to, subject, html, attachments = []) => {
 
         if (online) {
             await transporter.sendMail({
-                from: '',
+                from: 'cesararath1976@gmail.com',
                 to,
                 subject,
                 html,
@@ -50,7 +50,7 @@ const processEmailQueue = async () => {
             while (emailQueue.length > 0) {
                 const { to, subject, html, attachments } = emailQueue.shift();
                 await transporter.sendMail({
-                    from: '',
+                    from: 'cesararath1976@gmail.com',
                     to,
                     subject,
                     html,

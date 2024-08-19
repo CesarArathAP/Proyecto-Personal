@@ -72,7 +72,7 @@ const clientSchema = new mongoose.Schema({
       }
     }
   ],
-  // Campos para el token
+  // Campos para el token de restablecimiento de contraseña
   token: {
     type: String,
     required: false
@@ -81,6 +81,16 @@ const clientSchema = new mongoose.Schema({
     type: Date,
     required: false
   },
+  // Campos para el código de verificación de 6 dígitos
+  verification_code: {
+    type: String,
+    required: false
+  },
+  verification_expiration: {
+    type: Date,
+    required: false
+  },
+  // Campos para registrar intentos fallidos de verificación
   intentos_fallidos: {
     type: Number,
     default: 0
