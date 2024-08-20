@@ -1,5 +1,7 @@
 const ClientAuth = require('../models/ClientAuth');
 const generateToken = require('../utils/generar_token');
+const TokenEmail = require('../utils/mensajeToken');
+const sendEmail = require('../email/server_smtp'); // Asegúrate de tener la función de envío de correo
 
 const saveToken = async (req, res) => {
     try {
@@ -36,7 +38,13 @@ const saveToken = async (req, res) => {
         cliente.verification_expiration = null;
         await cliente.save();
 
-        res.status(200).json({ message: 'Token generado y guardado', token });
+        // Enviar el correo con el token
+        const subject = 'Token de Verificación';
+        const html = TokenEmail(cliente.nombre_completo, token);
+
+        await sendEmail(cliente.email, subject, html);
+
+        res.status(200).json({ message: 'Token generado y correo enviado', token });
     } catch (error) {
         console.error('Error al guardar token:', error);
         res.status(500).json({ message: 'Error del servidor', error });
